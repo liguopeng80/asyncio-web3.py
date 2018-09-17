@@ -16,49 +16,49 @@ class Parity(Module):
     """
     defaultBlock = "latest"
 
-    def enode(self):
-        return self.web3.manager.request_blocking(
+    async def enode(self):
+        return await self.web3.manager.request_blocking(
             "parity_enode",
             [],
         )
 
-    def netPeers(self):
-        return self.web3.manager.request_blocking(
+    async def netPeers(self):
+        return await self.web3.manager.request_blocking(
             "parity_netPeers",
             [],
         )
 
-    def traceReplayTransaction(self, transaction_hash, mode=['trace']):
-        return self.web3.manager.request_blocking(
+    async def traceReplayTransaction(self, transaction_hash, mode=['trace']):
+        return await self.web3.manager.request_blocking(
             "trace_replayTransaction",
             [transaction_hash, mode],
         )
 
-    def traceReplayBlockTransactions(self, block_identifier, mode=['trace']):
-        return self.web3.manager.request_blocking(
+    async def traceReplayBlockTransactions(self, block_identifier, mode=['trace']):
+        return await self.web3.manager.request_blocking(
             "trace_replayBlockTransactions",
             [block_identifier, mode]
         )
 
-    def traceBlock(self, block_identifier):
-        return self.web3.manager.request_blocking(
+    async def traceBlock(self, block_identifier):
+        return await self.web3.manager.request_blocking(
             "trace_block",
             [block_identifier]
         )
 
-    def traceFilter(self, params):
-        return self.web3.manager.request_blocking(
+    async def traceFilter(self, params):
+        return await self.web3.manager.request_blocking(
             "trace_filter",
             [params]
         )
 
-    def traceTransaction(self, transaction_hash):
-        return self.web3.manager.request_blocking(
+    async def traceTransaction(self, transaction_hash):
+        return await self.web3.manager.request_blocking(
             "trace_transaction",
             [transaction_hash]
         )
 
-    def traceCall(self, transaction, mode=['trace'], block_identifier=None):
+    async def traceCall(self, transaction, mode=['trace'], block_identifier=None):
         # TODO: move to middleware
         if 'from' not in transaction and is_checksum_address(self.defaultAccount):
             transaction = assoc(transaction, 'from', self.defaultAccount)
@@ -66,13 +66,13 @@ class Parity(Module):
         # TODO: move to middleware
         if block_identifier is None:
             block_identifier = self.defaultBlock
-        return self.web3.manager.request_blocking(
+        return await self.web3.manager.request_blocking(
             "trace_call",
             [transaction, mode, block_identifier],
         )
 
-    def traceRawTransaction(self, raw_transaction, mode=['trace']):
-        return self.web3.manager.request_blocking(
+    async def traceRawTransaction(self, raw_transaction, mode=['trace']):
+        return await self.web3.manager.request_blocking(
             "trace_rawTransaction",
             [raw_transaction, mode],
         )

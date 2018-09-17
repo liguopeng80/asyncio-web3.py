@@ -5,13 +5,13 @@ from web3.module import (
 
 class TxPool(Module):
     @property
-    def content(self):
-        return self.web3.manager.request_blocking("txpool_content", [])
+    async def content(self):
+        return await self.web3.manager.request_blocking("txpool_content", [])
 
     @property
-    def inspect(self):
-        return self.web3.manager.request_blocking("txpool_inspect", [])
+    async def inspect(self):
+        return await self.web3.manager.request_blocking("txpool_inspect", [])
 
     @property
-    def status(self):
-        return self.web3.manager.request_blocking("txpool_status", [])
+    async def status(self):
+        return await self.web3.manager.request_blocking("txpool_status", [])

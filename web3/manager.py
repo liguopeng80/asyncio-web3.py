@@ -84,12 +84,12 @@ class RequestManager:
     #
     # Provider requests and response
     #
-    def _make_request(self, method, params):
+    async def _make_request(self, method, params):
         for provider in self.providers:
             request_func = provider.request_func(self.web3, tuple(self.middleware_stack))
             self.logger.debug("Making request. Method: %s", method)
             try:
-                return request_func(method, params)
+                return await request_func(method, params)
             except CannotHandleRequest:
                 continue
         else:
@@ -102,11 +102,11 @@ class RequestManager:
                 )
             )
 
-    def request_blocking(self, method, params):
+    async def request_blocking(self, method, params):
         """
         Make a synchronous request using the provider
         """
-        response = self._make_request(method, params)
+        response = await self._make_request(method, params)
 
         if "error" in response:
             raise ValueError(response["error"])

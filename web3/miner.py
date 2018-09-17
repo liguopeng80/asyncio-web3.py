@@ -5,33 +5,33 @@ from web3.module import (
 
 class Miner(Module):
     @property
-    def hashrate(self):
-        return self.web3.manager.request_blocking("eth_hashrate", [])
+    async def hashrate(self):
+        return await self.web3.manager.request_blocking("eth_hashrate", [])
 
-    def makeDAG(self, number):
-        return self.web3.manager.request_blocking("miner_makeDag", [number])
+    async def makeDAG(self, number):
+        return await self.web3.manager.request_blocking("miner_makeDag", [number])
 
-    def setExtra(self, extra):
-        return self.web3.manager.request_blocking("miner_setExtra", [extra])
+    async def setExtra(self, extra):
+        return await self.web3.manager.request_blocking("miner_setExtra", [extra])
 
-    def setEtherBase(self, etherbase):
-        return self.web3.manager.request_blocking("miner_setEtherbase", [etherbase])
+    async def setEtherBase(self, etherbase):
+        return await self.web3.manager.request_blocking("miner_setEtherbase", [etherbase])
 
-    def setGasPrice(self, gas_price):
-        return self.web3.manager.request_blocking(
+    async def setGasPrice(self, gas_price):
+        return await self.web3.manager.request_blocking(
             "miner_setGasPrice", [gas_price],
         )
 
-    def start(self, num_threads):
-        return self.web3.manager.request_blocking(
+    async def start(self, num_threads):
+        return await self.web3.manager.request_blocking(
             "miner_start", [num_threads],
         )
 
-    def stop(self):
-        return self.web3.manager.request_blocking("miner_stop", [])
+    async def stop(self):
+        return await self.web3.manager.request_blocking("miner_stop", [])
 
-    def startAutoDAG(self):
-        return self.web3.manager.request_blocking("miner_startAutoDag", [])
+    async def startAutoDAG(self):
+        return await self.web3.manager.request_blocking("miner_startAutoDag", [])
 
-    def stopAutoDAG(self):
-        return self.web3.manager.request_blocking("miner_stopAutoDag", [])
+    async def stopAutoDAG(self):
+        return await self.web3.manager.request_blocking("miner_stopAutoDag", [])

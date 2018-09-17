@@ -47,10 +47,10 @@ class BaseProvider:
             provider_request_fn=self.make_request,
         )
 
-    def make_request(self, method, params):
+    async def make_request(self, method, params):
         raise NotImplementedError("Providers must implement this method")
 
-    def isConnected(self):
+    async def isConnected(self):
         raise NotImplementedError("Providers must implement this method")
 
 
@@ -72,9 +72,9 @@ class JSONBaseProvider(BaseProvider):
         encoded = FriendlyJsonSerde().json_encode(rpc_dict)
         return to_bytes(text=encoded)
 
-    def isConnected(self):
+    async def isConnected(self):
         try:
-            response = self.make_request('web3_clientVersion', [])
+            response = await self.make_request('web3_clientVersion', [])
         except IOError:
             return False
         else:

@@ -32,7 +32,7 @@ def make_stalecheck_middleware(
     def stalecheck_middleware(make_request, web3):
         cache = {'latest': None}
 
-        def middleware(method, params):
+        async def middleware(method, params):
             if method not in skip_stalecheck_for_methods:
                 if _isfresh(cache['latest'], allowable_delay):
                     pass
@@ -43,6 +43,6 @@ def make_stalecheck_middleware(
                     else:
                         raise StaleBlockchain(latest, allowable_delay)
 
-            return make_request(method, params)
+            return await make_request(method, params)
         return middleware
     return stalecheck_middleware

@@ -69,62 +69,62 @@ class Eth(Module):
         raise NotImplementedError()
 
     @property
-    def protocolVersion(self):
-        return self.web3.manager.request_blocking("eth_protocolVersion", [])
+    async def protocolVersion(self):
+        return await self.web3.manager.request_blocking("eth_protocolVersion", [])
 
     @property
-    def syncing(self):
-        return self.web3.manager.request_blocking("eth_syncing", [])
+    async def syncing(self):
+        return await self.web3.manager.request_blocking("eth_syncing", [])
 
     @property
-    def coinbase(self):
-        return self.web3.manager.request_blocking("eth_coinbase", [])
+    async def coinbase(self):
+        return await self.web3.manager.request_blocking("eth_coinbase", [])
 
     @property
-    def mining(self):
-        return self.web3.manager.request_blocking("eth_mining", [])
+    async def mining(self):
+        return await self.web3.manager.request_blocking("eth_mining", [])
 
     @property
-    def hashrate(self):
-        return self.web3.manager.request_blocking("eth_hashrate", [])
+    async def hashrate(self):
+        return await self.web3.manager.request_blocking("eth_hashrate", [])
 
     @property
-    def gasPrice(self):
-        return self.web3.manager.request_blocking("eth_gasPrice", [])
+    async def gasPrice(self):
+        return await self.web3.manager.request_blocking("eth_gasPrice", [])
 
     @property
-    def accounts(self):
-        return self.web3.manager.request_blocking("eth_accounts", [])
+    async def accounts(self):
+        return await self.web3.manager.request_blocking("eth_accounts", [])
 
     @property
-    def blockNumber(self):
-        return self.web3.manager.request_blocking("eth_blockNumber", [])
+    async def blockNumber(self):
+        return await self.web3.manager.request_blocking("eth_blockNumber", [])
 
-    def getBalance(self, account, block_identifier=None):
+    async def getBalance(self, account, block_identifier=None):
         if block_identifier is None:
             block_identifier = self.defaultBlock
-        return self.web3.manager.request_blocking(
+        return await self.web3.manager.request_blocking(
             "eth_getBalance",
             [account, block_identifier],
         )
 
-    def getStorageAt(self, account, position, block_identifier=None):
+    async def getStorageAt(self, account, position, block_identifier=None):
         if block_identifier is None:
             block_identifier = self.defaultBlock
-        return self.web3.manager.request_blocking(
+        return await self.web3.manager.request_blocking(
             "eth_getStorageAt",
             [account, position, block_identifier]
         )
 
-    def getCode(self, account, block_identifier=None):
+    async def getCode(self, account, block_identifier=None):
         if block_identifier is None:
             block_identifier = self.defaultBlock
-        return self.web3.manager.request_blocking(
+        return await self.web3.manager.request_blocking(
             "eth_getCode",
             [account, block_identifier],
         )
 
-    def getBlock(self, block_identifier, full_transactions=False):
+    async def getBlock(self, block_identifier, full_transactions=False):
         """
         `eth_getBlockByHash`
         `eth_getBlockByNumber`
@@ -136,12 +136,12 @@ class Eth(Module):
             if_number='eth_getBlockByNumber',
         )
 
-        return self.web3.manager.request_blocking(
+        return await self.web3.manager.request_blocking(
             method,
             [block_identifier, full_transactions],
         )
 
-    def getBlockTransactionCount(self, block_identifier):
+    async def getBlockTransactionCount(self, block_identifier):
         """
         `eth_getBlockTransactionCountByHash`
         `eth_getBlockTransactionCountByNumber`
@@ -152,12 +152,12 @@ class Eth(Module):
             if_hash='eth_getBlockTransactionCountByHash',
             if_number='eth_getBlockTransactionCountByNumber',
         )
-        return self.web3.manager.request_blocking(
+        return await self.web3.manager.request_blocking(
             method,
             [block_identifier],
         )
 
-    def getUncleCount(self, block_identifier):
+    async def getUncleCount(self, block_identifier):
         """
         `eth_getUncleCountByBlockHash`
         `eth_getUncleCountByBlockNumber`
@@ -168,12 +168,12 @@ class Eth(Module):
             if_hash='eth_getUncleCountByBlockHash',
             if_number='eth_getUncleCountByBlockNumber',
         )
-        return self.web3.manager.request_blocking(
+        return await self.web3.manager.request_blocking(
             method,
             [block_identifier],
         )
 
-    def getUncleByBlock(self, block_identifier, uncle_index):
+    async def getUncleByBlock(self, block_identifier, uncle_index):
         """
         `eth_getUncleByBlockHashAndIndex`
         `eth_getUncleByBlockNumberAndIndex`
@@ -184,13 +184,13 @@ class Eth(Module):
             if_hash='eth_getUncleByBlockHashAndIndex',
             if_number='eth_getUncleByBlockNumberAndIndex',
         )
-        return self.web3.manager.request_blocking(
+        return await self.web3.manager.request_blocking(
             method,
             [block_identifier, uncle_index],
         )
 
-    def getTransaction(self, transaction_hash):
-        return self.web3.manager.request_blocking(
+    async def getTransaction(self, transaction_hash):
+        return await self.web3.manager.request_blocking(
             "eth_getTransactionByHash",
             [transaction_hash],
         )
@@ -203,7 +203,7 @@ class Eth(Module):
         """
         return self.getTransactionByBlock(block_identifier, transaction_index)
 
-    def getTransactionByBlock(self, block_identifier, transaction_index):
+    async def getTransactionByBlock(self, block_identifier, transaction_index):
         """
         `eth_getTransactionByBlockHashAndIndex`
         `eth_getTransactionByBlockNumberAndIndex`
@@ -214,7 +214,7 @@ class Eth(Module):
             if_hash='eth_getTransactionByBlockHashAndIndex',
             if_number='eth_getTransactionByBlockNumberAndIndex',
         )
-        return self.web3.manager.request_blocking(
+        return await self.web3.manager.request_blocking(
             method,
             [block_identifier, transaction_index],
         )
@@ -222,16 +222,16 @@ class Eth(Module):
     def waitForTransactionReceipt(self, transaction_hash, timeout=120):
         return wait_for_transaction_receipt(self.web3, transaction_hash, timeout)
 
-    def getTransactionReceipt(self, transaction_hash):
-        return self.web3.manager.request_blocking(
+    async def getTransactionReceipt(self, transaction_hash):
+        return await self.web3.manager.request_blocking(
             "eth_getTransactionReceipt",
             [transaction_hash],
         )
 
-    def getTransactionCount(self, account, block_identifier=None):
+    async def getTransactionCount(self, account, block_identifier=None):
         if block_identifier is None:
             block_identifier = self.defaultBlock
-        return self.web3.manager.request_blocking(
+        return await self.web3.manager.request_blocking(
             "eth_getTransactionCount",
             [
                 account,
@@ -250,7 +250,7 @@ class Eth(Module):
         new_transaction = merge(current_transaction_params, transaction_params)
         return replace_transaction(self.web3, current_transaction, new_transaction)
 
-    def sendTransaction(self, transaction):
+    async def sendTransaction(self, transaction):
         # TODO: move to middleware
         if 'from' not in transaction and is_checksum_address(self.defaultAccount):
             transaction = assoc(transaction, 'from', self.defaultAccount)
@@ -263,25 +263,25 @@ class Eth(Module):
                 get_buffered_gas_estimate(self.web3, transaction),
             )
 
-        return self.web3.manager.request_blocking(
+        return await self.web3.manager.request_blocking(
             "eth_sendTransaction",
             [transaction],
         )
 
-    def sendRawTransaction(self, raw_transaction):
-        return self.web3.manager.request_blocking(
+    async def sendRawTransaction(self, raw_transaction):
+        return await self.web3.manager.request_blocking(
             "eth_sendRawTransaction",
             [raw_transaction],
         )
 
-    def sign(self, account, data=None, hexstr=None, text=None):
+    async def sign(self, account, data=None, hexstr=None, text=None):
         message_hex = to_hex(data, hexstr=hexstr, text=text)
-        return self.web3.manager.request_blocking(
+        return await self.web3.manager.request_blocking(
             "eth_sign", [account, message_hex],
         )
 
     @apply_to_return_value(HexBytes)
-    def call(self, transaction, block_identifier=None):
+    async def call(self, transaction, block_identifier=None):
         # TODO: move to middleware
         if 'from' not in transaction and is_checksum_address(self.defaultAccount):
             transaction = assoc(transaction, 'from', self.defaultAccount)
@@ -289,22 +289,22 @@ class Eth(Module):
         # TODO: move to middleware
         if block_identifier is None:
             block_identifier = self.defaultBlock
-        return self.web3.manager.request_blocking(
+        return await self.web3.manager.request_blocking(
             "eth_call",
             [transaction, block_identifier],
         )
 
-    def estimateGas(self, transaction):
+    async def estimateGas(self, transaction):
         # TODO: move to middleware
         if 'from' not in transaction and is_checksum_address(self.defaultAccount):
             transaction = assoc(transaction, 'from', self.defaultAccount)
 
-        return self.web3.manager.request_blocking(
+        return await self.web3.manager.request_blocking(
             "eth_estimateGas",
             [transaction],
         )
 
-    def filter(self, filter_params=None, filter_id=None):
+    async def filter(self, filter_params=None, filter_id=None):
         if filter_id and filter_params:
             raise TypeError(
                 "Ambiguous invocation: provide either a `filter_params` or a `filter_id` argument. "
@@ -312,12 +312,12 @@ class Eth(Module):
             )
         if is_string(filter_params):
             if filter_params == "latest":
-                filter_id = self.web3.manager.request_blocking(
+                filter_id = await self.web3.manager.request_blocking(
                     "eth_newBlockFilter", [],
                 )
                 return BlockFilter(self.web3, filter_id)
             elif filter_params == "pending":
-                filter_id = self.web3.manager.request_blocking(
+                filter_id = await self.web3.manager.request_blocking(
                     "eth_newPendingTransactionFilter", [],
                 )
                 return TransactionFilter(self.web3, filter_id)
@@ -327,7 +327,7 @@ class Eth(Module):
                     "`latest` for string based filters"
                 )
         elif isinstance(filter_params, dict):
-            _filter_id = self.web3.manager.request_blocking(
+            _filter_id = await self.web3.manager.request_blocking(
                 "eth_newFilter",
                 [filter_params],
             )
@@ -339,23 +339,23 @@ class Eth(Module):
                             "a valid filter object, or a filter_id as a string "
                             "or hex.")
 
-    def getFilterChanges(self, filter_id):
-        return self.web3.manager.request_blocking(
+    async def getFilterChanges(self, filter_id):
+        return await self.web3.manager.request_blocking(
             "eth_getFilterChanges", [filter_id],
         )
 
-    def getFilterLogs(self, filter_id):
-        return self.web3.manager.request_blocking(
+    async def getFilterLogs(self, filter_id):
+        return await self.web3.manager.request_blocking(
             "eth_getFilterLogs", [filter_id],
         )
 
-    def getLogs(self, filter_params):
-        return self.web3.manager.request_blocking(
+    async def getLogs(self, filter_params):
+        return await self.web3.manager.request_blocking(
             "eth_getLogs", [filter_params],
         )
 
-    def uninstallFilter(self, filter_id):
-        return self.web3.manager.request_blocking(
+    async def uninstallFilter(self, filter_id):
+        return await self.web3.manager.request_blocking(
             "eth_uninstallFilter", [filter_id],
         )
 
@@ -374,11 +374,11 @@ class Eth(Module):
     def setContractFactory(self, contractFactory):
         self.defaultContractFactory = contractFactory
 
-    def getCompilers(self):
-        return self.web3.manager.request_blocking("eth_getCompilers", [])
+    async def getCompilers(self):
+        return await self.web3.manager.request_blocking("eth_getCompilers", [])
 
-    def getWork(self):
-        return self.web3.manager.request_blocking("eth_getWork", [])
+    async def getWork(self):
+        return await self.web3.manager.request_blocking("eth_getWork", [])
 
     def generateGasPrice(self, transaction_params=None):
         if self.gasPriceStrategy:

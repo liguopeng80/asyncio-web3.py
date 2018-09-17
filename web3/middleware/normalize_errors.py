@@ -5,8 +5,8 @@ from web3.utils.toolz import (
 
 
 def normalize_errors_middleware(make_request, web3):
-    def middleware(method, params):
-        result = make_request(method, params)
+    async def middleware(method, params):
+        result = await make_request(method, params)
 
         # As of v1.8, Geth returns errors when you request a
         # receipt for a transaction that is not in the chain.

@@ -5,17 +5,17 @@ from web3.module import (
 
 class Net(Module):
     @property
-    def listening(self):
-        return self.web3.manager.request_blocking("net_listening", [])
+    async def listening(self):
+        return await self.web3.manager.request_blocking("net_listening", [])
 
     @property
-    def peerCount(self):
-        return self.web3.manager.request_blocking("net_peerCount", [])
+    async def peerCount(self):
+        return await self.web3.manager.request_blocking("net_peerCount", [])
 
     @property
     def chainId(self):
         return None
 
     @property
-    def version(self):
-        return self.web3.manager.request_blocking("net_version", [])
+    async def version(self):
+        return await self.web3.manager.request_blocking("net_version", [])
